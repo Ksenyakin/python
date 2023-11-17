@@ -1,44 +1,35 @@
-from collections import defaultdict
-
 def count_descendants(tree, node):
-    # Рекурсивно подсчитываем число потомков для заданного узла
+    # Рекурсивная функция для подсчета числа потомков у узла дерева
+    if node not in tree:
+        return 0
     descendants = 0
     for child in tree[node]:
         descendants += 1 + count_descendants(tree, child)
     return descendants
 
+
 def main():
     # Ввод количества элементов в генеалогическом древе
-    N = int(input("Введите количество элементов в генеалогическом древе: "))
+    n = int(input("Введите число элементов в генеалогическом древе N: "))
+    tree = {}  # Словарь для представления генеалогического древа
 
-    # Инициализация структуры данных для хранения родственных отношений
-    tree = defaultdict(list)
-    all_people = set()
-
-    # Ввод родителей для каждого элемента древа, кроме родоначальника
-    for _ in range(N - 1):
+    # Ввод родителей для каждого элемента, кроме родоначальника
+    for _ in range(n - 1):
         child, parent = input().split()
-        tree[parent].append(child)
-        all_people.add(child)
-        all_people.add(parent)
+        tree.setdefault(parent, []).append(child)
 
-    # Определение числа потомков для каждого элемента и вывод результата
-    for node in all_people:
-        descendants = count_descendants(tree, node)
-        if descendants == 0:
-            print(f"Элемент {node} не имеет потомков.")
-        else:
-            print(f"Элемент {node} имеет {descendants} потомков.")
+    # Вывод числа потомков для каждого элемента древа
+    for node in tree:
+        descendants_count = count_descendants(tree, node)
+        print(f"У элемента {node} количество потомков: {descendants_count}")
+
+    # Добавление информации о тех, у кого нет потомков
+    all_people = set(tree.keys()).union(set(child for children in tree.values() for child in children))
+    childless_people = all_people - set(tree.keys())
+
+    for person in childless_people:
+        print(f"У элемента {person} нет потомков.")
+
 
 if __name__ == "__main__":
     main()
-
-# Alexei Peter_1
-# Anna Peter_1
-# Elizabeth Peter_1
-# Petrer_2 Alexei
-# Peter_3 Anna
-# Paul_1 Peter_3
-# Alexander_1 Paul_1
-# Nucholaus_1 Paul_1
-https://pythontutor.ru/lessons/dicts/problems/genealogy_level_count/
