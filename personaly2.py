@@ -41,3 +41,4 @@ if __name__ == "__main__":
 # Paul_1 Peter_3
 # Alexander_1 Paul_1
 # Nucholaus_1 Paul_1
+https://pythontutor.ru/lessons/dicts/problems/genealogy_level_count/
